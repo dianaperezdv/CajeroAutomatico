@@ -59,6 +59,7 @@ function iniciar(){
             if (verificaruser.tipoUser===1){
                 alert("Usted es administrador");
                 cargarDinero();
+                alert(saldoCajero)
                 iniciar()
             }
             // Si el usuario es cliente
@@ -68,7 +69,7 @@ function iniciar(){
                     console.log("Cajero en mantenimiento, vuelva pronto.");
                     iniciar();
                 }
-                else{
+                else {
                     retirarDinero();
                 }
             }
@@ -83,7 +84,7 @@ function iniciar(){
 }
 
 
-
+// Le pedimos al administrador que ingrese cuántos billetes desea cargar al cajero y los agregamos al arreglo. Sumamos los billetes multiplicados por sus denominaciones y obtenemos el total.
 function cargarDinero(){
     console.log("entré")
     deposito.cinco +=parseInt(prompt("Digite el numero de billete de 5.000 que ingresa: "));
@@ -92,13 +93,12 @@ function cargarDinero(){
     deposito.cincuenta += parseInt(prompt("Digite el numero de billete de 50.000 que ingresa: "));
     deposito.cien += parseInt(prompt("Digite el numero de billete de 100.000 que ingresa: "));
     console.log(deposito);
-//deposito.forEach(e => {saldoCajero += deposito[e]});
-(deposito.diez * 10000) + (deposito.cinco * 5000) + (deposito.veinte * 20000) +(deposito.cincuenta * 50000) +(deposito.cien * 100000) ;
-depositoEnConsola();
+    saldoCajero = saldoCajero + (deposito.diez * 10000) + (deposito.cinco * 5000) + (deposito.veinte * 20000) +(deposito.cincuenta * 50000) +(deposito.cien * 100000) ;
+    depositoEnConsola();
 }
 
 
-
+// Mostramos en consola la cantidad de billetes por denominación que posee el cajero.
 function depositoEnConsola(){
     console.log("En billetes de $5.000 el cajero contiene $" + (deposito.cinco * 5000));
     console.log("En billetes de $10.000 el cajero contiene $" + (deposito.diez * 10000));
@@ -110,28 +110,53 @@ function depositoEnConsola(){
 
 
 function retirarDinero(){
-
-    cantidadRetirar=parseInt(prompt("Ingrese la cantidad de dinero que desea retirar: "));
-    if(cantidadRetirar % 5000 === 0 ){
-        if(saldoCajero>= cantidadRetirar){
-            console.log("A diana le gusta el posole");
-            const centenas= centenasDeMil(cantidadRetirar);
-            const decenas = decenasDeMil(cantidadRetirar);
-            const unidades = unidadesDeMil(cantidadRetirar);
-            console.log(centenas);
-            console.log(decenas);
-            console.log(unidades);
-
-
+    const cantidadRetirar=parseInt(prompt("Ingrese la cantidad de dinero que desea retirar: "));
+    if(saldoCajero >= cantidadRetirar){
+        depositoEnConsola();
+        const saldoPorDividir = cantidadRetirar;
+        while(saldoPorDividir>0){
+            const divisionCien = Math.floor(saldoPorDividir/100000);
+                if (divisionCien > 0){
+                    const billetesCienRetiro = divisionCien;
+                    deposito.cien = deposito.cien - billetesCienRetiro;
+                    saldoPorDividir = saldoPorDividir - (billetesCienRetiro * 100000);
+                    console.log("Se entregan "+ billetesCienRetiro + " billetes de cien.");
+                }
+                const divisionCincuenta = Math.floor(saldoPorDividir/50000);
+                if (divisionCincuenta > 0){
+                    const billetesCincuentaRetiro = divisionCincuenta;
+                    deposito.cincuenta = deposito.cincuenta - billetesCincuentaRetiro;
+                    saldoPorDividir = saldoPorDividir - (billetesCincuentaRetiro * 50000);
+                    console.log("Se entregan "+ billetesCincuentaRetiro + " billetes de cincuenta.");
+                }
+                const divisionVeinte = Math.floor(saldoPorDividir/20000);
+                if (divisionVeinte > 0){
+                    const billetesVeinteRetiro = divisionCincuenta;
+                    deposito.veinte = deposito.veinte - billetesVeinteRetiro;
+                    saldoPorDividir = saldoPorDividir - (billetesVeinteRetiro * 20000);
+                    console.log("Se entregan "+ billetesVeinteRetiro + " billetes de veinte.");
+                }
+                const divisionDiez = Math.floor(saldoPorDividir/10000);
+                if (divisionDiez > 0){
+                    const billetesDiezRetiro = divisionDiez;
+                    deposito.diez = deposito.diez - billetesDiezRetiro;
+                    saldoPorDividir = saldoPorDividir - (billetesDiezRetiro * 10000);
+                    console.log("Se entregan "+ billetesDiezRetiro + " billetes de diez.");
+                }
+                const divisionCinco = Math.floor(saldoPorDividir/5000);
+                if (divisionCinco > 0){
+                    const billetesCincoRetiro = divisionCinco;
+                    deposito.cinco = deposito.cinco - billetesCincoRetiro;
+                    saldoPorDividir = saldoPorDividir - (billetesCincoRetiro * 100000);
+                    console.log("Se entregan "+ billetesCincoRetiro + " billetes de cinco.");
+                }
+            }
+            }
+    else{
+        console.log("Saldo insuficiente. Vuelva a intentarlo.");
+        retirarDinero();
         }
-        else{
-            console.log("Saldo insuficiente. Vuelva a intentarlo.");
-            retirarDinero();
-        }
-    }
-    else {
-        console.log("Cajero solo permite multiplos de 5000");
-    }
+
 }
 
 function centenasDeMil(cantidad){
