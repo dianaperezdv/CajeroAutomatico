@@ -2,7 +2,7 @@
 
 let saldoCajero = 0;
 let totalDinero = 0;
-
+//Crear un array
 let deposito = {
     cinco:0,
     diez:0,
@@ -59,18 +59,17 @@ function iniciar(){
             if (verificaruser.tipoUser===1){
                 alert("Usted es administrador");
                 cargarDinero();
-                alert(saldoCajero)
-                iniciar()
+                iniciar();
             }
             // Si el usuario es cliente
             if (verificaruser.tipoUser===2){
                 alert("Usted es cliente");
-                if (saldoCajero === 0){
-                    console.log("Cajero en mantenimiento, vuelva pronto.");
-                    iniciar();
+                if (saldoCajero > 0){
+                    retirarDinero();
                 }
                 else {
-                    retirarDinero();
+                    console.log("Cajero en mantenimiento, vuelva pronto.");
+                    iniciar();
                 }
             }
         }
@@ -113,35 +112,35 @@ function retirarDinero(){
     const cantidadRetirar=parseInt(prompt("Ingrese la cantidad de dinero que desea retirar: "));
     if(saldoCajero >= cantidadRetirar){
         depositoEnConsola();
-        const saldoPorDividir = cantidadRetirar;
+        let saldoPorDividir = cantidadRetirar;
         while(saldoPorDividir>0){
             const divisionCien = Math.floor(saldoPorDividir/100000);
-                if (divisionCien > 0){
-                    const billetesCienRetiro = divisionCien;
-                    deposito.cien = deposito.cien - billetesCienRetiro;
-                    saldoPorDividir = saldoPorDividir - (billetesCienRetiro * 100000);
-                    console.log("Se entregan "+ billetesCienRetiro + " billetes de cien.");
+            if (divisionCien > 0){
+                const billetesCienRetiro = divisionCien;
+                deposito.cien = deposito.cien - billetesCienRetiro;
+                saldoPorDividir = saldoPorDividir - (billetesCienRetiro * 100000);
+                console.log("Se entregan "+ billetesCienRetiro + " billetes de cien.");
+            }
+            const divisionCincuenta = Math.floor(saldoPorDividir/50000);
+            if (divisionCincuenta > 0){
+                const billetesCincuentaRetiro = divisionCincuenta;
+                deposito.cincuenta = deposito.cincuenta - billetesCincuentaRetiro;
+                saldoPorDividir = saldoPorDividir - (billetesCincuentaRetiro * 50000);
+                console.log("Se entregan "+ billetesCincuentaRetiro + " billetes de cincuenta.");
                 }
-                const divisionCincuenta = Math.floor(saldoPorDividir/50000);
-                if (divisionCincuenta > 0){
-                    const billetesCincuentaRetiro = divisionCincuenta;
-                    deposito.cincuenta = deposito.cincuenta - billetesCincuentaRetiro;
-                    saldoPorDividir = saldoPorDividir - (billetesCincuentaRetiro * 50000);
-                    console.log("Se entregan "+ billetesCincuentaRetiro + " billetes de cincuenta.");
+            const divisionVeinte = Math.floor(saldoPorDividir/20000);
+            if (divisionVeinte > 0){
+                const billetesVeinteRetiro = divisionCincuenta;
+                deposito.veinte = deposito.veinte - billetesVeinteRetiro;
+                saldoPorDividir = saldoPorDividir - (billetesVeinteRetiro * 20000);
+                console.log("Se entregan "+ billetesVeinteRetiro + " billetes de veinte.");
                 }
-                const divisionVeinte = Math.floor(saldoPorDividir/20000);
-                if (divisionVeinte > 0){
-                    const billetesVeinteRetiro = divisionCincuenta;
-                    deposito.veinte = deposito.veinte - billetesVeinteRetiro;
-                    saldoPorDividir = saldoPorDividir - (billetesVeinteRetiro * 20000);
-                    console.log("Se entregan "+ billetesVeinteRetiro + " billetes de veinte.");
-                }
-                const divisionDiez = Math.floor(saldoPorDividir/10000);
-                if (divisionDiez > 0){
-                    const billetesDiezRetiro = divisionDiez;
-                    deposito.diez = deposito.diez - billetesDiezRetiro;
-                    saldoPorDividir = saldoPorDividir - (billetesDiezRetiro * 10000);
-                    console.log("Se entregan "+ billetesDiezRetiro + " billetes de diez.");
+            const divisionDiez = Math.floor(saldoPorDividir/10000);
+            if (divisionDiez > 0){
+                const billetesDiezRetiro = divisionDiez;
+                deposito.diez = deposito.diez - billetesDiezRetiro;
+                saldoPorDividir = saldoPorDividir - (billetesDiezRetiro * 10000);
+                console.log("Se entregan "+ billetesDiezRetiro + " billetes de diez.");
                 }
                 const divisionCinco = Math.floor(saldoPorDividir/5000);
                 if (divisionCinco > 0){
@@ -151,6 +150,9 @@ function retirarDinero(){
                     console.log("Se entregan "+ billetesCincoRetiro + " billetes de cinco.");
                 }
             }
+        saldoCajero = saldoCajero - cantidadRetirar;
+        console.log("El saldo restante es " + saldoCajero);
+        iniciar();
             }
     else{
         console.log("Saldo insuficiente. Vuelva a intentarlo.");
