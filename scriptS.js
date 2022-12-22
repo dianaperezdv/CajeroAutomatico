@@ -53,7 +53,7 @@ function iniciar(){
     //Si el usuario existe, confirmamos que su contraseña sea correcta y tomamos acciones según el tipo de usuario que sea
     if (verificaruser){
         if (verificaruser.contrasena === contrasenaIngreso){
-            alert("Ha iniciado sesión correctamente");
+            console.log("Ha iniciado sesión correctamente");
             // Si el usuario es administrador
             if (verificaruser.tipoUser===1){
                 console.log("Usted es administrador");
